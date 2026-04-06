@@ -30,6 +30,7 @@
                             <th scope="col" class="py-4 px-6 tracking-wider">Kode</th>
                             <th scope="col" class="py-4 px-6 tracking-wider">Nama Barang</th>
                             <th scope="col" class="py-4 px-6 tracking-wider">Kategori</th>
+                            <th scope="col" class="py-4 px-6 tracking-wider">Satuan</th>
                             <th scope="col" class="py-4 px-6 tracking-wider">Stok</th>
                             <th scope="col" class="py-4 px-6 tracking-wider">Harga</th>
                             <th scope="col" class="py-4 px-6 text-center tracking-wider">Aksi</th>
@@ -51,10 +52,15 @@
                             <td class="py-4 px-6">
                                 <span class="bg-gray-100 border border-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-xs font-bold">{{ $barang->kategori }}</span>
                             </td>
+                            
+                            <td class="py-4 px-6">
+                                <span class="text-gray-600 font-semibold">{{ $barang->satuan }}</span>
+                            </td>
+                            
                             <td class="py-4 px-6">
                                 <span class="font-extrabold text-gray-900 text-base">{{ $barang->stok }}</span> 
-                                <span class="text-gray-500 font-medium">{{ $barang->satuan }}</span>
                             </td>
+                            
                             <td class="py-4 px-6 font-bold text-gray-900">Rp {{ number_format($barang->harga, 0, ',', '.') }}</td>
                             <td class="py-4 px-6">
                                 <div class="flex justify-center items-center space-x-2">
@@ -73,7 +79,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="8" class="py-12 px-6 text-center text-gray-500 font-medium">
+                            <td colspan="9" class="py-12 px-6 text-center text-gray-500 font-medium">
                                 Data barang belum tersedia.
                             </td>
                         </tr>
