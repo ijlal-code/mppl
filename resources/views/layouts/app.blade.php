@@ -12,9 +12,9 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased text-gray-800 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+    <body class="font-sans antialiased text-gray-800 bg-gray-50">
         
-        <div x-data="{ sidebarOpen: false }" class="flex h-screen overflow-hidden">
+        <div x-data="{ sidebarOpen: false }" @toggle-sidebar.window="sidebarOpen = !sidebarOpen" class="flex h-screen overflow-hidden">
             
             <div x-show="sidebarOpen" 
                  x-transition:enter="transition-opacity ease-linear duration-300"
@@ -77,14 +77,14 @@
 
             <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
                 
-                <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 w-full z-10 shrink-0">
+                <header class="bg-white shadow-sm border-b border-gray-200 w-full z-10 shrink-0">
                     @include('layouts.navigation')
                 </header>
 
-                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-900 w-full">
+                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 w-full">
                     @isset($header)
-                        <div class="bg-white dark:bg-gray-800 shadow-sm">
-                            <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8 font-bold text-2xl text-emerald-800 dark:text-emerald-400">
+                        <div class="bg-white shadow-sm border-b border-gray-100">
+                            <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8 font-bold text-2xl text-emerald-800">
                                 {{ $header }}
                             </div>
                         </div>
