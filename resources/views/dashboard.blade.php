@@ -1,100 +1,93 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
+        {{ __('Dashboard Overview') }}
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
-            <!-- Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">">{{ $totalBarang }}</h3>
-                    <p class="mt-2 text-3xl font-bold text-blue-600 dark:text-blue-400">125</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ $totalKategori }}</h3>
-                    <p class="mt-2 text-3xl font-bold text-green-600 dark:text-green-400">12</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ $stokHabis }}</h3>
-                    <p class="mt-2 text-3xl font-bold text-yellow-600 dark:text-yellow-400">5</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ $barangHariIni }}</h3>
-                    <p class="mt-2 text-3xl font-bold text-indigo-600 dark:text-indigo-400">20</p>
-                </div>
-            </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-xl p-6 border-l-4 border-emerald-500 hover:shadow-lg transition-shadow">
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Barang</h3>
+            <p class="mt-2 text-4xl font-extrabold text-emerald-600 dark:text-emerald-400">125</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-xl p-6 border-l-4 border-teal-500 hover:shadow-lg transition-shadow">
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kategori</h3>
+            <p class="mt-2 text-4xl font-extrabold text-teal-600 dark:text-teal-400">12</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-xl p-6 border-l-4 border-yellow-400 hover:shadow-lg transition-shadow">
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Stok Menipis</h3>
+            <p class="mt-2 text-4xl font-extrabold text-yellow-500 dark:text-yellow-400">5</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-xl p-6 border-l-4 border-green-500 hover:shadow-lg transition-shadow">
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Barang Masuk Hari Ini</h3>
+            <p class="mt-2 text-4xl font-extrabold text-green-600 dark:text-green-400">20</p>
+        </div>
+    </div>
 
-            <!-- Tabel Manajemen Barang -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Manajemen Data Barang</h3>
-                        <a href="{{ route('barang.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            Tambah Barang
-                        </a>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-700">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">No.</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Gambar</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kode Barang</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Barang</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kategori</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Satuan</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Harga</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-    @forelse ($barangs as $index => $barang)
-        <tr>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                {{ $index + 1 }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-                @if($barang->gambar)
-                    <img src="{{ asset('storage/' . $barang->gambar) }}" alt="Gambar" class="h-10 w-10 object-cover rounded-md">
-                @else
-                    <span class="text-sm text-gray-500 dark:text-gray-400">Tidak ada</span>
-                @endif
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $barang->kode_barang }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $barang->nama_barang }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $barang->kategori }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $barang->satuan }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $barang->stok }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">Rp {{ number_format($barang->harga, 0, ',', '.') }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <a href="{{ route('barang.edit', $barang->id) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 mr-3">Edit</a>
-                <form action="{{ route('barang.destroy', $barang->id) }}" method="POST" class="inline-block">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400" onclick="return confirm('Yakin ingin menghapus barang ini?')">Hapus</button>
-                </form>
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="9" class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-400">
-                Belum ada data barang. Silakan tambah barang baru.
-            </td>
-        </tr>
-    @endforelse
-</tbody>
-
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <div class="bg-white dark:bg-gray-800 shadow rounded-xl overflow-hidden">
+        <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Update Data Terakhir</h3>
+            <a href="{{ route('barang.create') }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-lg font-semibold text-sm text-white shadow-sm hover:bg-emerald-700 active:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                Tambah Barang
+            </a>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-emerald-50 dark:bg-gray-700">
+                    <tr>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-emerald-800 dark:text-gray-300 uppercase tracking-wider">No.</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-emerald-800 dark:text-gray-300 uppercase tracking-wider">Gambar</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-emerald-800 dark:text-gray-300 uppercase tracking-wider">Kode</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-emerald-800 dark:text-gray-300 uppercase tracking-wider">Nama Barang</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-emerald-800 dark:text-gray-300 uppercase tracking-wider">Kategori</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-emerald-800 dark:text-gray-300 uppercase tracking-wider">Stok</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-emerald-800 dark:text-gray-300 uppercase tracking-wider">Harga</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-emerald-800 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+                    @forelse ($barangs ?? [] as $index => $barang)
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $index + 1 }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if($barang->gambar)
+                                    <img src="{{ asset('storage/' . $barang->gambar) }}" alt="Gambar" class="h-12 w-12 object-cover rounded-lg shadow-sm border border-gray-100">
+                                @else
+                                    <div class="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-400">N/A</div>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-700 dark:text-emerald-400">{{ $barang->kode_barang }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ $barang->nama_barang }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">{{ $barang->kategori }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                <span class="font-bold {{ $barang->stok <= 5 ? 'text-red-500' : 'text-gray-900' }}">{{ $barang->stok }}</span> <span class="text-gray-500">{{ $barang->satuan }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Rp {{ number_format($barang->harga, 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-3">
+                                    <a href="{{ route('barang.edit', $barang->id) }}" class="text-emerald-600 hover:text-emerald-900 font-semibold transition-colors">Edit</a>
+                                    <form action="{{ route('barang.destroy', $barang->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-800 font-semibold transition-colors" onclick="return confirm('Yakin ingin menghapus barang ini?')">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="px-6 py-10 whitespace-nowrap text-sm text-center text-gray-500">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                                    <p>Belum ada data barang. Silakan tambah barang baru.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </x-app-layout>
