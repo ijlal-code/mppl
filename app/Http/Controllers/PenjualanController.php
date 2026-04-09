@@ -3,51 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penjualan;
-use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PenjualanController extends Controller
 {
-    // --- KHUSUS KASIR ---
+    // --- KASIR ---
     public function create()
     {
-        $produks = Produk::all();
-        return view('kasir.create', compact('produks'));
+        return view('kasir.create');
     }
 
     public function store(Request $request)
     {
+        // Validasi input sebagai teks dan angka bulat (integer)
         $request->validate([
-            'produk_id' => 'required|exists:produks,id',
+            'nama_barang' => 'required|string|max:255',
+            'harga' => 'required|integer|min:0',
             'jumlah' => 'required|integer|min:1',
             'tanggal' => 'required|date',
         ]);
 
-        $produk = Produk::findOrFail($request->produk_id);
-        $total_harga = $produk->harga * $request->jumlah;
+        // Kalkulasi matematika otomatis
+        $total = $request->harga * $request->jumlah;
 
         Penjualan::create([
-            'produk_id' => $request->produk_id,
-            'user_id' => Auth::id(), // ID Kasir yang login
+            'user_id' => Auth::id(),
+            'nama_barang' => $request->nama_barang,
+            'harga' => $request->harga,
             'jumlah' => $request->jumlah,
-            'total_harga' => $total_harga, // Hitung otomatis
+            'total_harga' => $total,
             'tanggal' => $request->tanggal,
         ]);
 
-        return redirect()->route('kasir.create')->with('success', 'Transaksi berhasil disimpan!');
+        return redirect()->route('kasir.create')->with('success', 'Transaksi Penjualan Berhasil Disimpan!');
     }
 
-    // --- KHUSUS ADMIN ---
+    // --- ADMIN ---
     public function index()
     {
-        $penjualans = Penjualan::with(['produk', 'user'])->latest()->paginate(15);
+        $penjualans = Penjualan::with('user')->latest()->paginate(15);
         return view('admin.penjualan.index', compact('penjualans'));
     }
 
     public function destroy(Penjualan $penjualan)
     {
         $penjualan->delete();
-        return redirect()->route('admin.penjualan.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('admin.penjualan.index')->with('success', 'Data Transaksi berhasil dihapus');
     }
 }

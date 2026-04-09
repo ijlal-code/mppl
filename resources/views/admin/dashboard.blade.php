@@ -41,7 +41,7 @@
                         <tr class="border-b">
                             <td class="p-2">{{ $item->tanggal }}</td>
                             <td class="p-2">{{ $item->user->name }}</td>
-                            <td class="p-2">{{ $item->produk->nama_barang }}</td>
+                            <td class="p-2">{{ $item->nama_barang }}</td>
                             <td class="p-2">{{ $item->jumlah }}</td>
                             <td class="p-2">Rp {{ number_format($item->total_harga, 0, ',', '.') }}</td>
                         </tr>

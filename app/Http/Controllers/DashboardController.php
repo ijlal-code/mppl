@@ -17,15 +17,18 @@ class DashboardController extends Controller
 
         $userRole = Auth::user()->role;
 
-        // Jika dia Admin, tampilkan halaman Dashboard Admin
+        // =========================
+        // ADMIN
+        // =========================
         if ($userRole === 'admin') {
+
             $totalTransaksi = Penjualan::count();
             $totalBarang = Penjualan::sum('jumlah');
             $totalPendapatan = Penjualan::sum('total_harga');
             $hariIni = Penjualan::whereDate('tanggal', today())->count();
-            
-            // Ambil 10 transaksi terakhir beserta relasi
-            $data = Penjualan::with(['produk', 'user'])->latest()->take(10)->get();
+
+            // ❗ HAPUS produk, cukup user saja
+            $data = Penjualan::with('user')->latest()->take(10)->get();
 
             return view('admin.dashboard', compact(
                 'totalTransaksi', 
@@ -36,12 +39,16 @@ class DashboardController extends Controller
             ));
         }
 
-        // Jika dia Kasir, JANGAN BUKA DASHBOARD, langsung lempar ke form Input
+        // =========================
+        // KASIR
+        // =========================
         if ($userRole === 'kasir') {
             return redirect()->route('kasir.create');
         }
 
-        // Jika karena suatu alasan role tidak terdeteksi (sebagai pengaman tambahan)
+        // =========================
+        // DEFAULT (AMAN)
+        // =========================
         abort(403, 'Akses ditolak. Role tidak dikenali.');
     }
 }
