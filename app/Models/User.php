@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'photo_profile',
-
+        'role', // Sudah benar ada di sini
     ];
 
     /**
@@ -46,5 +46,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relasi ke tabel penjualans
+     * Menandakan bahwa 1 User (Kasir) dapat melakukan banyak Penjualan
+     */
+    public function penjualans()
+    {
+        return $this->hasMany(Penjualan::class);
     }
 }
