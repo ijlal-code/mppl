@@ -1,71 +1,82 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Welcome - Sistem Informasi Pengelolaan Barang</title>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-	<script src="https://cdn.tailwindcss.com"></script>
-	<script>
-    	tailwind.config = {
-        	darkMode: 'class'
-    	}
-    	function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-    	}
-	</script>
-</head>
-<body class="bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 font-inter text-gray-800 dark:text-gray-200">
-	<!-- Navbar -->
-	<nav class="bg-white dark:bg-gray-900 shadow-md fixed top-0 w-full z-10">
-    	<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        	<h1 class="text-2xl font-bold text-blue-700 dark:text-blue-400">SIP Barang</h1>
-        	<div class="space-x-6 flex items-center">
-            	<a href="{{ route('login') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Login</a>
-            	<a href="{{ route('register') }}" class="px-4 py-2 border border-blue-600 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 transition">Register</a>
-            	<button onclick="toggleDarkMode()" class="ml-4 px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-                	🌙 / ☀️
-            	</button>
-        	</div>
-    	</div>
-	</nav>
- 
-	<!-- Hero Section -->
-	<section class="pt-32 pb-20 text-center">
-    	<h2 class="text-4xl md:text-5xl font-extrabold text-blue-700 dark:text-blue-400 mb-6">Sistem Informasi Pengelolaan Barang</h2>
-    	<p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-        	Selamat datang di aplikasi <span class="font-semibold text-blue-600 dark:text-blue-400">SIP Barang</span>.
-        	Aplikasi ini membantu Anda dalam mengelola data barang, stok, dan laporan dengan cara yang lebih mudah, cepat, dan terstruktur.
-    	</p>
-    	<div class="flex justify-center gap-4">
-        	<a href="{{ route('login') }}" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl shadow hover:bg-blue-700 transition">Masuk Sekarang</a>
-        	<a href="{{ route('register') }}" class="px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 font-medium rounded-xl hover:bg-blue-50 dark:hover:bg-gray-800 transition">Daftar</a>
-    	</div>
-	</section>
- 
-	<!-- Features Section -->
-	<section class="bg-white dark:bg-gray-900 py-16">
-    	<div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
-        	<div class="p-6 rounded-2xl shadow hover:shadow-lg transition bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900">
-            	<h3 class="text-xl font-semibold mb-3 text-blue-700 dark:text-blue-400">Manajemen Barang</h3>
-            	<p class="text-gray-600 dark:text-gray-300">Catat, kelola, dan update informasi barang dengan mudah.</p>
-        	</div>
-        	<div class="p-6 rounded-2xl shadow hover:shadow-lg transition bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900">
-            	<h3 class="text-xl font-semibold mb-3 text-blue-700 dark:text-blue-400">Stok Otomatis</h3>
-            	<p class="text-gray-600 dark:text-gray-300">Pantau persediaan barang secara real-time untuk mencegah kekurangan atau kelebihan stok.</p>
-        	</div>
-        	<div class="p-6 rounded-2xl shadow hover:shadow-lg transition bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900">
-            	<h3 class="text-xl font-semibold mb-3 text-blue-700 dark:text-blue-400">Laporan Cepat</h3>
-            	<p class="text-gray-600 dark:text-gray-300">Hasilkan laporan barang dan stok dengan cepat dan akurat.</p>
-        	</div>
-    	</div>
-	</section>
- 
-	<!-- Footer -->
-	<footer class="bg-gray-100 dark:bg-gray-900 py-6 mt-10">
-    	<div class="max-w-6xl mx-auto px-6 text-center text-gray-600 dark:text-gray-400">
-        	© 2025 Sistem Informasi Pengelolaan Barang. Dibuat dengan ❤️ menggunakan Laravel & TailwindCSS.
-    	</div>
-	</footer>
-</body>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Sistem POS Kasir & Admin</title>
+
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="antialiased bg-gray-50 text-gray-900 font-sans">
+        <div class="relative min-h-screen flex flex-col items-center justify-center selection:bg-blue-500 selection:text-white">
+            
+            <div class="absolute top-0 right-0 p-6 sm:fixed flex space-x-4">
+                @if (Route::has('login'))
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-blue-600 transition duration-300">
+                            Dashboard Sistem
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-blue-600 transition duration-300">Log in</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="font-semibold text-gray-600 hover:text-blue-600 transition duration-300">Register</a>
+                        @endif
+                    @endauth
+                @endif
+            </div>
+
+            <div class="max-w-4xl mx-auto px-6 py-12 text-center bg-white shadow-xl shadow-gray-200/50 rounded-2xl border border-gray-100">
+                
+                <div class="flex justify-center mb-8">
+                    <div class="p-5 bg-blue-50 rounded-full">
+                        <svg class="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl tracking-tight">
+                    Sistem Point of Sale (POS)
+                </h1>
+                
+                <p class="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">
+                    Aplikasi manajemen penjualan modern yang memisahkan otorisasi akses untuk Kasir dan Administrator. Kelola transaksi harian dan pantau laporan pendapatan dengan efisien.
+                </p>
+
+                <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                    <div class="p-6 border border-gray-100 rounded-xl bg-gray-50 hover:bg-blue-50 transition duration-300">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <h3 class="text-xl font-bold text-gray-900">Peran Kasir</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed">Fokus pada operasional penjualan. Memilih barang, memasukkan jumlah produk yang dibeli, dan menyimpan data transaksi secara *real-time* ke dalam database sistem.</p>
+                    </div>
+
+                    <div class="p-6 border border-gray-100 rounded-xl bg-gray-50 hover:bg-blue-50 transition duration-300">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                            <h3 class="text-xl font-bold text-gray-900">Peran Admin</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed">Fokus pada pemantauan dan pengelolaan. Mengakses *dashboard* ringkasan, melihat total omzet, mereview detail transaksi, dan melakukan manajemen data (Edit/Hapus).</p>
+                    </div>
+                </div>
+
+                <div class="mt-10">
+                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition duration-300">
+                        Masuk ke Sistem POS
+                        <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center text-sm font-medium text-gray-400">
+                Sistem Point of Sale &copy; {{ date('Y') }} - Didesain untuk Tugas MPPL
+            </div>
+        </div>
+    </body>
 </html>

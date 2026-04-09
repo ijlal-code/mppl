@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\DashboardController;
@@ -8,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Otomatis arahkan ke dashboard masing-masing setelah login
+// Arahkan ke DashboardController (Logika pemisahan halaman ada di controller ini)
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
