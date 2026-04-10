@@ -18,6 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+  
+
     // === ROUTE KHUSUS KASIR ===
     Route::middleware('role:kasir')->group(function () {
         Route::get('/transaksi/baru', [PenjualanController::class, 'create'])->name('kasir.create');
