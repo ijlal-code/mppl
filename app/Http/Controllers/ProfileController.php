@@ -59,21 +59,32 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
+    /**
+     * Update the user's profile photo.
+     */
     public function updatePhoto(Request $request): RedirectResponse
-	{
-    	$request->validate([
-        	'photo_profile' => ['required', 'image', 'max:5024'],
-    	]);
-    	$user = $request->user();
-    	if ($user->photo_profile) {
-        	// Delete the old photo if it exists
-            Storage::disk('public')->delete($user->photo_profile);
-    	}
-    	$path = $request->file('photo_profile')->store('photos', 'public');
-   	$user->forceFill([
-        	'photo_profile' => $path,
-    	])->save();
-    	return Redirect::route('profile.edit')->with('status', 'photo-updated');
-	}
+    {
+        // Tambahkan validasi mimes agar lebih aman dan size max disesuaikan (5120 = 5MB)
+        $request->validate([
+            'photo_profile' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
+        ]);
 
+        $user = $request->user();
+
+        // Cek jika user sudah punya foto sebelumnya
+        if ($user->photo_profile && Storage::disk('public')->exists($user->photo_profile)) {
+            // Hapus foto lama untuk menghemat penyimpanan
+            Storage::disk('public')->delete($user->photo_profile);
+        }
+
+        // Simpan foto baru ke dalam disk 'public' folder 'photos'
+        $path = $request->file('photo_profile')->store('photos', 'public');
+
+        // Update database
+        $user->forceFill([
+            'photo_profile' => $path,
+        ])->save();
+
+        return Redirect::route('profile.edit')->with('status', 'photo-updated');
+    }
 }
