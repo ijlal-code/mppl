@@ -11,11 +11,13 @@ return new class extends Migration
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('nama_barang'); // Menggunakan String untuk Nama Barang
-            $table->integer('harga');      // Menggunakan Integer
-            $table->integer('jumlah');     // Menggunakan Integer
-            $table->integer('total_harga');// Menggunakan Integer
+            $table->string('nama_barang');
+            $table->integer('harga');
+            $table->integer('jumlah');
+            $table->integer('total_harga');
             $table->date('tanggal');
+            // Tambahkan kolom foto_barang, nullable() karena bersifat opsional
+            $table->string('foto_barang')->nullable(); 
             $table->timestamps();
         });
     }

@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penjualan extends Model
 {
-    protected $fillable = ['user_id', 'nama_barang', 'harga', 'jumlah', 'total_harga', 'tanggal'];
+   protected $fillable = [
+    'user_id', 
+    'nama_barang', 
+    'harga', 
+    'jumlah', 
+    'total_harga', 
+    'tanggal', 
+    'foto_barang' // Tambahkan ini
+];
 
     public function user()
     {

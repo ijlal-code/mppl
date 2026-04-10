@@ -9,7 +9,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Arahkan ke DashboardController (Logika pemisahan halaman ada di controller ini)
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -28,6 +27,10 @@ Route::middleware('auth')->group(function () {
     // === ROUTE KHUSUS ADMIN ===
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/penjualan', [PenjualanController::class, 'index'])->name('admin.penjualan.index');
+        // Tambahkan Route Create & Store Admin
+        Route::get('/admin/penjualan/create', [PenjualanController::class, 'createAdmin'])->name('admin.penjualan.create');
+        Route::post('/admin/penjualan', [PenjualanController::class, 'storeAdmin'])->name('admin.penjualan.store');
+        
         Route::get('/admin/penjualan/{penjualan}/edit', [PenjualanController::class, 'edit'])->name('admin.penjualan.edit');
         Route::put('/admin/penjualan/{penjualan}', [PenjualanController::class, 'update'])->name('admin.penjualan.update');
         Route::delete('/admin/penjualan/{penjualan}', [PenjualanController::class, 'destroy'])->name('admin.penjualan.destroy');
