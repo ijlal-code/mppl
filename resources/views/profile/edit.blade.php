@@ -1,8 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-extrabold text-2xl text-emerald-800 leading-tight">
-            {{ __('My Profile') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-extrabold text-2xl text-emerald-800 leading-tight">
+                {{ __('My Profile') }}
+            </h2>
+
+            <div class="flex items-center">
+                {{-- Gunakan strtolower agar tidak sensitif huruf besar/kecil (Admin/admin tetap terbaca) --}}
+                @if(strtolower(auth()->user()->role) === 'admin')
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-bold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all">
+                        &larr; {{ __('Kembali ke Dashboard') }}
+                    </a>
+                @elseif(strtolower(auth()->user()->role) === 'kasir')
+                    <a href="{{ route('kasir.create') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-bold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all">
+                        &larr; {{ __('Kembali ke Kasir') }}
+                    </a>
+                @else
+                    {{-- Default jika tidak punya role --}}
+                    <a href="{{ url('/') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-bold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all">
+                        &larr; {{ __('Kembali') }}
+                    </a>
+                @endif
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-10">
