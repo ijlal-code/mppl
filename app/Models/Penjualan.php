@@ -13,7 +13,7 @@ class Penjualan extends Model
     'jumlah', 
     'total_harga', 
     'tanggal', 
-    'foto_barang' // Tambahkan ini
+    'foto_barang'
 ];
 
     public function user()

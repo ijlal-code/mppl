@@ -20,7 +20,31 @@ class PenjualanController extends Controller
             'foto_barang' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi foto
         ];
 
-        $validated = $request->validate($rules);
+        // 1. TAMBAHKAN ARRAY PESAN KUSTOM DI SINI
+        $messages = [
+            'nama_barang.required' => 'Nama barang tidak boleh kosong!',
+            'nama_barang.string'   => 'Nama barang harus berupa teks!',
+            'nama_barang.max'      => 'Nama barang maksimal 255 karakter!',
+            
+            'harga.required'       => 'Harga wajib diisi!',
+            'harga.integer'        => 'Harga melebihi batas inputan!',
+            'harga.min'            => 'Harga tidak boleh minus!',
+            
+            'jumlah.required'      => 'Jumlah barang wajib diisi!',
+            'jumlah.integer'       => 'Harga melebihi batas inputan!',
+            'jumlah.min'           => 'Jumlah minimal 1!',
+            
+            'tanggal.required'     => 'Tanggal wajib diisi!',
+            'tanggal.date'         => 'Format tanggal tidak valid!',
+            
+            'foto_barang.image'    => 'File yang diupload harus berupa gambar!',
+            'foto_barang.mimes'    => 'Format gambar harus jpeg, png, atau jpg!',
+            'foto_barang.max'      => 'Ukuran foto maksimal 2MB!',
+        ];
+
+        // 2. MASUKKAN $messages SEBAGAI PARAMETER KEDUA
+        $validated = $request->validate($rules, $messages);
+        
         $total = $request->harga * $request->jumlah;
 
         $data = [
