@@ -39,10 +39,10 @@
                             <tr class="border-b bg-gray-50 text-gray-700 text-sm">
                                 <th class="p-3 font-semibold text-center w-12">No</th>
                                 <th class="p-3 font-semibold">Tanggal</th>
-                                <th class="p-3 font-semibold text-center">Gambar</th>
+                                <!-- <th class="p-3 font-semibold text-center">Gambar</th> -->
                                 <th class="p-3 font-semibold">Kasir</th>
                                 <th class="p-3 font-semibold">Barang</th>
-                                <th class="p-3 font-semibold text-center">Jml</th>
+                                <th class="p-3 font-semibold text-center">Jumlah barang</th>
                                 <th class="p-3 font-semibold">Total Harga</th>
                                 <th class="p-3 font-semibold text-center">Aksi</th>
                             </tr>
@@ -54,7 +54,7 @@
                                 
                                 <td class="p-3 text-sm text-gray-600 align-middle">{{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</td>
                                 
-                                <td class="p-3 align-middle">
+                                <!-- <td class="p-3 align-middle">
                                     <div class="flex justify-center">
                                         @if($item->foto_barang)
                                             <img src="{{ asset('storage/' . $item->foto_barang) }}" alt="Foto" class="h-12 w-12 object-cover rounded-md border border-gray-200 shadow-sm">
@@ -64,7 +64,7 @@
                                             </div>
                                         @endif
                                     </div>
-                                </td>
+                                </td> -->
 
                                 <td class="p-3 text-sm text-gray-800 align-middle">{{ $item->user->name ?? 'Dihapus' }}</td>
                                 <td class="p-3 text-sm font-medium text-gray-800 align-middle">{{ $item->nama_barang }}</td>

@@ -1,44 +1,25 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PenjualanController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FrontController;
+use App\Http\Controllers\Admin\AdminProdukController;
+use App\Http\Controllers\Admin\AdminPesananController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// --- GUEST (TANPA LOGIN) ---
+Route::get('/', [FrontController::class, 'index'])->name('welcome');
+Route::get('/pesan/{id}', [FrontController::class, 'create'])->name('pesan.create');
+Route::post('/pesan/{id}', [FrontController::class, 'store'])->name('pesan.store');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
+// --- ADMIN ---
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function() { return view('admin.dashboard'); })->name('dashboard');
     
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-  Route::patch('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.update.photo');
-
-    // === ROUTE KHUSUS KASIR ===
-    Route::middleware('role:kasir')->group(function () {
-        Route::get('/transaksi/baru', [PenjualanController::class, 'create'])->name('kasir.create');
-        Route::post('/transaksi/baru', [PenjualanController::class, 'store'])->name('kasir.store');
-    });
-
-    // === ROUTE KHUSUS ADMIN ===
-    Route::middleware('role:admin')->group(function () {
-        Route::get('/admin/penjualan', [PenjualanController::class, 'index'])->name('admin.penjualan.index');
-        // Tambahkan Route Create & Store Admin
-        Route::get('/admin/penjualan/create', [PenjualanController::class, 'createAdmin'])->name('admin.penjualan.create');
-        Route::post('/admin/penjualan', [PenjualanController::class, 'storeAdmin'])->name('admin.penjualan.store');
-        
-        Route::get('/admin/penjualan/{penjualan}/edit', [PenjualanController::class, 'edit'])->name('admin.penjualan.edit');
-        Route::put('/admin/penjualan/{penjualan}', [PenjualanController::class, 'update'])->name('admin.penjualan.update');
-        Route::delete('/admin/penjualan/{penjualan}', [PenjualanController::class, 'destroy'])->name('admin.penjualan.destroy');
-    });
+    // CRUD Produk Makanan
+    Route::resource('produk', AdminProdukController::class);
+    
+    // Kelola Pesanan
+    Route::get('pesanan', [AdminPesananController::class, 'index'])->name('pesanan.index');
+    Route::patch('pesanan/{id}/terima', [AdminPesananController::class, 'terima'])->name('pesanan.terima');
 });
 
 require __DIR__.'/auth.php';

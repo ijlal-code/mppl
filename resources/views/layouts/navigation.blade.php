@@ -30,12 +30,12 @@
 
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-4 py-2 gap-2 border border-green-100 text-sm font-medium rounded-full text-green-800 bg-green-50 hover:bg-green-100 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-4 py-2 gap-2 border border-black-100 text-sm font-medium rounded-full text-black-800 bg-black-50  focus:outline-none transition ease-in-out duration-150">
                             
                             @if (Auth::user()->photo_profile)
                                 <img src="{{ asset('storage/' . Auth::user()->photo_profile) }}" alt="Foto Profil" class="w-8 h-8 rounded-full object-cover border border-green-300">
                             @else
-                                <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center text-green-700">
+                                <div class="w-8 h-8 rounded-full bg-black-700 flex items-center justify-center text-black-700">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                 </div>
                             @endif
