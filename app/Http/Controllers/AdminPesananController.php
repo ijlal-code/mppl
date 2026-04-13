@@ -13,15 +13,16 @@ class AdminPesananController extends Controller
         return view('admin.pesanan.index', compact('pesanans'));
     }
 
-    public function terima($id)
-    {
-        $pesanan = Pesanan::findOrFail($id);
-        $pesanan->update(['status' => 'diterima']);
-        
-        // Format Pesan WA Notifikasi
-        $pesan_wa = "Halo {$pesanan->nama_pemesan}, Pesanan {$pesanan->produk->nama_makanan} sejumlah {$pesanan->jumlah} porsi (Total: Rp " . number_format($pesanan->total_harga,0,',','.') . ") telah kami TERIMA dan sedang diproses. Mohon ditunggu!";
-        $link_wa = "https://wa.me/" . $pesanan->no_telp . "?text=" . urlencode($pesan_wa);
+   public function terima($id) {
+    $pesanan = Pesanan::with('produk')->findOrFail($id);
+    $pesanan->update(['status' => 'diterima']);
 
-        return redirect()->away($link_wa); // Otomatis mengarahkan Admin ke WhatsApp Web/App
-    }
+    // Pesan Notifikasi Otomatis
+    $pesan = "Halo {$pesanan->nama_pemesan}, pesanan {$pesanan->produk->nama_makanan} Anda telah DITERIMA dan sedang diproses.";
+    
+    // Mengarahkan admin ke link WA untuk memberi tahu user
+    $wa_url = "https://wa.me/{$pesanan->no_telp}?text=" . urlencode($pesan);
+
+    return redirect()->away($wa_url);
+}
 }

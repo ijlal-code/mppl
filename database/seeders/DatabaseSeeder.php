@@ -3,33 +3,45 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Produk;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Membuat Akun Admin
+        // 1. Buat Akun Admin agar bisa langsung login
         User::create([
-            'name' => 'Administrator',
+            'name' => 'Admin Ayam',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'), // Password default: password
+            'password' => Hash::make('password123'),
             'role' => 'admin',
         ]);
 
-        // Membuat Akun Kasir
-        User::create([
-            'name' => 'Kasir Utama',
-            'email' => 'kasir@gmail.com',
-            'password' => Hash::make('password'), // Password default: password
-            'role' => 'kasir',
+        // 2. Buat Minimal 3 Menu Ayam
+        Produk::create([
+            'nama_makanan' => 'Ayam Bakar Madu',
+            'harga' => 25000,
+            'stok' => 15,
+            'jenis_makanan' => 'Bakar',
+            'gambar' => 'ayam_bakar.jpg' 
         ]);
 
-        // Opsional: Generate beberapa data kasir lain secara acak jika menggunakan factory
-        // User::factory(5)->create(['role' => 'kasir']);
+        Produk::create([
+            'nama_makanan' => 'Ayam Goreng Krispi',
+            'harga' => 20000,
+            'stok' => 10,
+            'jenis_makanan' => 'Goreng',
+            'gambar' => 'ayam_goreng.jpg'
+        ]);
+
+        Produk::create([
+            'nama_makanan' => 'Ayam Geprek Sambal Bawang',
+            'harga' => 18000,
+            'stok' => 5,
+            'jenis_makanan' => 'Pedas',
+            'gambar' => 'ayam_geprek.jpg'
+        ]);
     }
 }
