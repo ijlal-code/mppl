@@ -1,25 +1,34 @@
 <?php
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontController;
-use App\Http\Controllers\Admin\AdminProdukController;
-use App\Http\Controllers\Admin\AdminPesananController;
+use App\Http\Controllers\AdminPesananController;
 use Illuminate\Support\Facades\Route;
 
-// --- GUEST (TANPA LOGIN) ---
+// --- HALAMAN PENGUNJUNG (TANPA LOGIN) ---
 Route::get('/', [FrontController::class, 'index'])->name('welcome');
-Route::get('/pesan/{id}', [FrontController::class, 'create'])->name('pesan.create');
-Route::post('/pesan/{id}', [FrontController::class, 'store'])->name('pesan.store');
+Route::get('/pesan/{id}', [FrontController::class, 'formPesan'])->name('pesan.form');
+Route::post('/pesan/{id}', [FrontController::class, 'simpanPesanan'])->name('pesan.store');
 
-// --- ADMIN ---
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', function() { return view('admin.dashboard'); })->name('admin.dashboard');
+// --- HALAMAN KHUSUS ADMIN (WAJIB LOGIN) ---
+Route::middleware(['auth'])->prefix('admin')->group(function () {
     
-    // CRUD Produk Makanan
-    Route::resource('produk', AdminProdukController::class);
+    // Rute Dashboard Admin -> Ini yang sebelumnya error
+    Route::get('/dashboard', [AdminPesananController::class, 'index'])->name('admin.dashboard');
     
-    // Kelola Pesanan
-    Route::get('pesanan', [AdminPesananController::class, 'index'])->name('pesanan.index');
-    Route::patch('pesanan/{id}/terima', [AdminPesananController::class, 'terima'])->name('pesanan.terima');
+    // Rute Aksi Terima Pesanan
+    Route::post('/pesanan/{id}/terima', [AdminPesananController::class, 'terima'])->name('admin.terima');
+});
+
+// Default Dashboard (opsional, untuk profil)
+Route::get('/dashboard', function () {
+    return view('admin.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
