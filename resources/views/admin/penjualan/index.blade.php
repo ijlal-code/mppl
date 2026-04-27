@@ -1,11 +1,27 @@
 <x-app-layout>
     <div class="bg-white shadow-xl border border-gray-100 sm:rounded-2xl overflow-hidden mt-6">
         
-        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-green-50 to-white">
+    
+        <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-green-50 to-white gap-4">
             <h2 class="text-xl font-extrabold text-green-800">Daftar Penjualan Keseluruhan</h2>
-            <a href="{{ route('admin.penjualan.create') }}" class="px-4 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition shadow-sm">
-                + Tambah Data
-            </a>
+            
+            <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                <form action="{{ route('admin.penjualan.index') }}" method="GET" class="flex items-center gap-2">
+                    <input type="date" name="tanggal" value="{{ request('tanggal') }}" class="border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 text-sm py-2">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition shadow-sm text-sm">
+                        Filter
+                    </button>
+                    @if(request('tanggal'))
+                        <a href="{{ route('admin.penjualan.index') }}" class="px-4 py-2 bg-gray-500 text-white font-bold rounded-lg hover:bg-gray-600 transition shadow-sm text-sm">
+                            Reset
+                        </a>
+                    @endif
+                </form>
+
+                <a href="{{ route('admin.penjualan.create') }}" class="px-4 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition shadow-sm whitespace-nowrap text-sm">
+                    + Tambah Data
+                </a>
+            </div>
         </div>
         
         <div class="p-6 overflow-x-auto">
@@ -30,7 +46,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-green-50">
-                    @foreach($penjualans as $index => $penjualan)
+                    @forelse($penjualans as $index => $penjualan)
                     <tr class="bg-white hover:bg-green-50 transition-colors">
                         <td class="px-6 py-4 font-bold text-green-800 text-center align-middle">{{ $penjualans->firstItem() + $index }}</td>
                         
@@ -71,7 +87,13 @@
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="9" class="px-6 py-6 text-center text-gray-500 font-semibold bg-white">
+                            Tidak ada data penjualan pada tanggal ini.
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
             

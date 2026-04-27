@@ -17,32 +17,26 @@ class PenjualanController extends Controller
             'harga' => 'required|integer|min:0',
             'jumlah' => 'required|integer|min:1',
             'tanggal' => 'required|date',
-            'foto_barang' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi foto
+            'foto_barang' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
 
-        // 1. TAMBAHKAN ARRAY PESAN KUSTOM DI SINI
         $messages = [
             'nama_barang.required' => 'Nama barang tidak boleh kosong!',
             'nama_barang.string'   => 'Nama barang harus berupa teks!',
             'nama_barang.max'      => 'Nama barang maksimal 255 karakter!',
-            
             'harga.required'       => 'Harga wajib diisi!',
             'harga.integer'        => 'Harga melebihi batas inputan!',
             'harga.min'            => 'Harga tidak boleh minus!',
-            
             'jumlah.required'      => 'Jumlah barang wajib diisi!',
             'jumlah.integer'       => 'Harga melebihi batas inputan!',
             'jumlah.min'           => 'Jumlah minimal 1!',
-            
             'tanggal.required'     => 'Tanggal wajib diisi!',
             'tanggal.date'         => 'Format tanggal tidak valid!',
-            
             'foto_barang.image'    => 'File yang diupload harus berupa gambar!',
             'foto_barang.mimes'    => 'Format gambar harus jpeg, png, atau jpg!',
             'foto_barang.max'      => 'Ukuran foto maksimal 2MB!',
         ];
 
-        // 2. MASUKKAN $messages SEBAGAI PARAMETER KEDUA
         $validated = $request->validate($rules, $messages);
         
         $total = $request->harga * $request->jumlah;
@@ -57,7 +51,6 @@ class PenjualanController extends Controller
         ];
 
         if ($request->hasFile('foto_barang')) {
-            // Hapus foto lama jika sedang update
             if ($penjualan && $penjualan->foto_barang) {
                 Storage::disk('public')->delete($penjualan->foto_barang);
             }
@@ -81,10 +74,20 @@ class PenjualanController extends Controller
     }
 
     // --- ADMIN ---
-    public function index()
+    public function index(Request $request) // <-- Tambahkan parameter Request
     {
-        $penjualans = Penjualan::with('user')->latest()->paginate(15);
-        return view('admin.penjualan.index', compact('penjualans'));
+        $query = Penjualan::with('user')->latest();
+        $selectedDate = $request->input('tanggal');
+
+        // Filter berdasarkan tanggal jika ada
+        if ($selectedDate) {
+            $query->whereDate('tanggal', $selectedDate);
+        }
+
+        // Appends query string agar filter tidak hilang saat pindah halaman (pagination)
+        $penjualans = $query->paginate(15)->appends(['tanggal' => $selectedDate]);
+        
+        return view('admin.penjualan.index', compact('penjualans', 'selectedDate'));
     }
 
     public function createAdmin() { return view('admin.penjualan.create'); }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request) // Tambahkan Request $request
     {
         // Pastikan user sudah login
         if (!Auth::check()) {
@@ -21,21 +21,34 @@ class DashboardController extends Controller
         // ADMIN
         // =========================
         if ($userRole === 'admin') {
+            $query = Penjualan::query();
+            $selectedDate = $request->input('tanggal');
 
-            $totalTransaksi = Penjualan::count();
-            $totalBarang = Penjualan::sum('jumlah');
-            $totalPendapatan = Penjualan::sum('total_harga');
-            $hariIni = Penjualan::whereDate('tanggal', today())->count();
+            // Jika ada filter tanggal yang dipilih, terapkan pada query
+            if ($selectedDate) {
+                $query->whereDate('tanggal', $selectedDate);
+            }
 
-            // ❗ HAPUS produk, cukup user saja
-            $data = Penjualan::with('user')->latest()->take(10)->get();
+            // Hitung data (akan menghitung semua jika tidak ada filter, atau menghitung sesuai tanggal jika ada filter)
+            $totalTransaksi = $query->count();
+            $totalBarang = (int) $query->sum('jumlah');
+            $totalPendapatan = (int) $query->sum('total_harga');
+            
+            // Transaksi hari ini atau transaksi pada tanggal yang dipilih
+            $hariIni = $selectedDate 
+                ? Penjualan::whereDate('tanggal', $selectedDate)->count() 
+                : Penjualan::whereDate('tanggal', today())->count();
+
+            // Ambil 10 data terakhir berdasarkan filter (jika ada)
+            $data = $query->with('user')->latest()->take(10)->get();
 
             return view('admin.dashboard', compact(
                 'totalTransaksi', 
                 'totalBarang', 
                 'totalPendapatan', 
                 'hariIni', 
-                'data'
+                'data',
+                'selectedDate'
             ));
         }
 

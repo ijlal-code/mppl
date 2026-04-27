@@ -5,6 +5,18 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            
+            <div class="mb-6 bg-white p-4 rounded-lg shadow flex flex-col sm:flex-row justify-between items-center">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 sm:mb-0">Filter Data Dashboard</h3>
+                <form action="{{ route('dashboard') }}" method="GET" class="flex items-center space-x-3">
+                    <input type="date" name="tanggal" value="{{ request('tanggal') }}" class="border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-sm">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-md hover:bg-blue-700 transition">Filter</button>
+                    @if(request('tanggal'))
+                        <a href="{{ route('dashboard') }}" class="px-4 py-2 bg-gray-500 text-white font-semibold text-sm rounded-md hover:bg-gray-600 transition">Reset</a>
+                    @endif
+                </form>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white p-6 rounded-lg shadow">
                     <h3 class="text-gray-500">Total Transaksi</h3>
@@ -19,14 +31,16 @@
                     <p class="text-2xl font-bold text-green-600">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-gray-500">Transaksi Hari Ini</h3>
+                    <h3 class="text-gray-500">{{ request('tanggal') ? 'Trx Pada Tanggal' : 'Transaksi Hari Ini' }}</h3>
                     <p class="text-2xl font-bold">{{ $hariIni }}</p>
                 </div>
             </div>
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-gray-800">10 Transaksi Terakhir</h3>
+                    <h3 class="text-lg font-bold text-gray-800">
+                        {{ request('tanggal') ? 'Transaksi Pada: ' . \Carbon\Carbon::parse(request('tanggal'))->format('d M Y') : '10 Transaksi Terakhir' }}
+                    </h3>
                     <a href="{{ route('admin.penjualan.create') }}" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm">
                         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         Tambah Data
@@ -48,12 +62,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($data as $item)
+                            @forelse($data as $item)
                             <tr class="border-b hover:bg-gray-50 transition-colors">
                                 <td class="p-3 text-sm text-gray-600 align-middle text-center font-medium">{{ $loop->iteration }}</td>
-                                
                                 <td class="p-3 text-sm text-gray-600 align-middle">{{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</td>
-                                
                                 <td class="p-3 align-middle">
                                     <div class="flex justify-center">
                                         @if($item->foto_barang)
@@ -65,18 +77,15 @@
                                         @endif
                                     </div>
                                 </td>
-
                                 <td class="p-3 text-sm text-gray-800 align-middle">{{ $item->user->name ?? 'Dihapus' }}</td>
                                 <td class="p-3 text-sm font-medium text-gray-800 align-middle">{{ $item->nama_barang }}</td>
                                 <td class="p-3 text-sm text-center font-bold text-gray-800 align-middle">{{ $item->jumlah }}</td>
                                 <td class="p-3 text-sm font-bold text-green-600 align-middle">Rp {{ number_format($item->total_harga, 0, ',', '.') }}</td>
-                                
                                 <td class="p-3 text-sm align-middle text-center">
                                     <div class="flex items-center justify-center space-x-3">
                                         <a href="{{ route('admin.penjualan.edit', $item->id) }}" class="text-blue-600 hover:text-blue-800 transition-colors" title="Edit">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </a>
-                                        
                                         <form action="{{ route('admin.penjualan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus transaksi ini?');" class="inline-block">
                                             @csrf
                                             @method('DELETE')
@@ -87,7 +96,11 @@
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="8" class="p-6 text-center text-gray-500 font-medium">Tidak ada transaksi pada tanggal ini.</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
