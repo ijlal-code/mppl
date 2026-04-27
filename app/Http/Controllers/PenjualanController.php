@@ -74,21 +74,37 @@ class PenjualanController extends Controller
     }
 
     // --- ADMIN ---
-    public function index(Request $request) // <-- Tambahkan parameter Request
-    {
-        $query = Penjualan::with('user')->latest();
-        $selectedDate = $request->input('tanggal');
+   public function index(Request $request)
+{
+    $query = Penjualan::with('user')->latest();
 
-        // Filter berdasarkan tanggal jika ada
-        if ($selectedDate) {
-            $query->whereDate('tanggal', $selectedDate);
-        }
-
-        // Appends query string agar filter tidak hilang saat pindah halaman (pagination)
-        $penjualans = $query->paginate(15)->appends(['tanggal' => $selectedDate]);
-        
-        return view('admin.penjualan.index', compact('penjualans', 'selectedDate'));
+    // Filter Tanggal
+    if ($request->filled('tanggal')) {
+        $query->whereDate('tanggal', $request->tanggal);
     }
+
+    // Filter Nama Barang
+    if ($request->filled('nama')) {
+        $query->where('nama_barang', 'like', '%' . $request->nama . '%');
+    }
+
+    // --- UBAH DI SINI ---
+    // Filter Harga Satuan (Bukan total_harga lagi)
+    if ($request->filled('harga')) {
+        $query->where('harga', '>=', $request->harga);
+    }
+
+    // Hitung statistik berdasarkan hasil filter
+    $stats = [
+        'total_transaksi' => $query->count(),
+        'total_barang' => (int) $query->sum('jumlah'),
+        'total_pendapatan' => (int) $query->sum('total_harga'),
+    ];
+
+    $penjualans = $query->paginate(15)->appends($request->all());
+
+    return view('admin.penjualan.index', compact('penjualans', 'stats'));
+}
 
     public function createAdmin() { return view('admin.penjualan.create'); }
 
